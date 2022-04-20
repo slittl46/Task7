@@ -12,7 +12,7 @@ def displayJobDetails():
     print("Display job details")
     responseJSON = requests.get("https://raw.githubusercontent.com/gaganj007/beautifulSoup/main/jobDetails.json?token=GHSAT0AAAAAABTRM2XHP3DJVMZWTYZGGXGEYS7EBTQ")
 
-    jsonfile = json.dumps(responseJSON)
+    jsonfile = json.open(responseJSON)
     return render_template('index.html',responseJSON= json.dumps(jsonfile)
 )
 
@@ -32,7 +32,14 @@ def getJobList(role,location):
     jobSnippet = soup.find('div',class_='job-snippet').text
     salarySnippetContainer = soup.find('div',class_='salary-snippet-container').text
 
-    jobDetails = []
+    jobDetails = [
+        {
+            "Title": jobTitle,
+            "Company": companyName,
+            "Description": jobSnippet,
+            "Salary": salarySnippetContainer
+        }
+    ]
 
     jobDetails.append(jobTitle)
     jobDetails.append(companyName)
