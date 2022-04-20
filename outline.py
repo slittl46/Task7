@@ -2,19 +2,19 @@
 from bs4 import BeautifulSoup
 import requests
 import json
-import numpy;
-from flask import Flask, render_template, jsonify
+import numpy
+from flask import Flask, render_template, jsonify, serialize
 
 app = Flask(__name__)
 
 @app.route("/")
 def displayJobDetails():
-    print("Display job details")
-    responseJSON = requests.get("https://raw.githubusercontent.com/gaganj007/beautifulSoup/main/jobDetails.json?token=GHSAT0AAAAAABTRM2XHP3DJVMZWTYZGGXGEYS7EBTQ")
+    
+    responseJSON = requests.get('https://raw.githubusercontent.com/gaganj007/beautifulSoup/main/jobDetails.json?token=GHSAT0AAAAAABTRM2XHP3DJVMZWTYZGGXGEYS7EBTQ')
+    my_json= json.loads(responseJSON.text)
+    return render_template('index.html', final_json= jsonify(my_json))
+    
 
-    jsonfile = json.open(responseJSON)
-    return render_template('index.html',responseJSON= json.dumps(jsonfile)
-)
 
 #function to get job list from url 'https://www.indeed.com/jobs?q={role}&l={location}'
 def getJobList(role,location):
@@ -41,10 +41,7 @@ def getJobList(role,location):
         }
     ]
 
-    jobDetails.append(jobTitle)
-    jobDetails.append(companyName)
-    jobDetails.append(jobSnippet)
-    jobDetails.append(salarySnippetContainer)
+
 
     jobDetails = json.dumps(jobDetails)
 
