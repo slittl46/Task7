@@ -3,16 +3,19 @@ from bs4 import BeautifulSoup
 import requests
 import json
 import numpy
-from flask import Flask, render_template, jsonify, serialize
+import urllib
+from flask import Flask, render_template, jsonify
 
 app = Flask(__name__)
 
 @app.route("/")
 def displayJobDetails():
     
-    responseJSON = requests.get('https://raw.githubusercontent.com/gaganj007/beautifulSoup/main/jobDetails.json?token=GHSAT0AAAAAABTRM2XHP3DJVMZWTYZGGXGEYS7EBTQ')
-    my_json= json.loads(responseJSON.text)
-    return render_template('index.html', final_json= jsonify(my_json))
+    with urllib.request.urlopen('https://raw.githubusercontent.com/gaganj007/beautifulSoup/main/jobDetails.json?token=GHSAT0AAAAAABTRM2XHP3DJVMZWTYZGGXGEYS7EBTQ') as response:
+        source = response.read()
+        responseJson = json.loads(source)
+
+    return render_template('index.html', jobs = responseJson)
     
 
 
